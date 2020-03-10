@@ -2,13 +2,13 @@
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class AfterImageRenderPassFeature : ScriptableRendererFeature
+public class ScreenRTBlitRenderPassFeature : ScriptableRendererFeature
 {
-    class AfterImageRenderPass : ScriptableRenderPass
+    class ScreenRTBlitRenderPass : ScriptableRenderPass
     {
-        RenderTargetIdentifier _currentTarget;
-        RenderTexture _screenBuffer;
-        
+        private RenderTargetIdentifier _currentTarget;
+        private RenderTexture _screenBuffer;
+
         public void Setup(RenderTargetIdentifier target, RenderTexture buffer)
         {
             _currentTarget = target;
@@ -21,7 +21,7 @@ public class AfterImageRenderPassFeature : ScriptableRendererFeature
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         { 
-            var cmd = CommandBufferPool.Get(nameof(AfterImageRenderPass));
+            var cmd = CommandBufferPool.Get(nameof(ScreenRTBlitRenderPass));
             cmd.Blit(_currentTarget, _screenBuffer);
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
@@ -32,11 +32,11 @@ public class AfterImageRenderPassFeature : ScriptableRendererFeature
         }
     }
 
-    AfterImageRenderPass _scriptablePass;
+    ScreenRTBlitRenderPass _scriptablePass;
 
     public override void Create()
     {
-        _scriptablePass = new AfterImageRenderPass();
+        _scriptablePass = new ScreenRTBlitRenderPass();
 
         _scriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
     }
@@ -46,7 +46,7 @@ public class AfterImageRenderPassFeature : ScriptableRendererFeature
         var currentCamera = renderingData.cameraData.camera;
         if (currentCamera != null && currentCamera.cameraType == CameraType.Game)
         {
-            var postEffect = currentCamera.GetComponent<IAfterImageCommandBuffer>();
+            var postEffect = currentCamera.GetComponent<IScreenRTBlit>();
             if (postEffect == null) return;
             if (postEffect.LatestCameraFeedBuffer == null) return;
             _scriptablePass.Setup(renderer.cameraColorTarget, postEffect.LatestCameraFeedBuffer);

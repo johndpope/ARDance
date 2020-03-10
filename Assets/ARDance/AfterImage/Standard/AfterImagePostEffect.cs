@@ -6,7 +6,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
 [RequireComponent(typeof(Camera))]
-public class AfterImagePostEffect : MonoBehaviour, IAfterImageCommandBuffer
+public class AfterImagePostEffect : MonoBehaviour, IScreenRTBlit
 {
     public RenderTexture LatestCameraFeedBuffer => _cameraFeedBuffers.Last();
 

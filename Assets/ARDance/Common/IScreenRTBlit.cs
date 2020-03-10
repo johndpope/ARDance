@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IAfterImageCommandBuffer
+public interface IScreenRTBlit
 {
     RenderTexture LatestCameraFeedBuffer { get; }
 }

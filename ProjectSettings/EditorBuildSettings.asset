@@ -8,7 +8,19 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ARDance/AfterImage/Standard/AfterImage.unity
     guid: 4e069e148bfeb47ccbf7908b301dd31a
-  - enabled: 1
+  - enabled: 0
     path: Assets/ARDance/AfterImage/Colored/ColoredAfterImage.unity
     guid: a0bc1bedcc9e64fe697acd384c1b2b85
+  - enabled: 0
+    path: Assets/ARDance/Test/Test.unity
+    guid: 23278563ebca245cebd43305e0865ba0
+  - enabled: 0
+    path: Assets/ARDance/DynamicShow/Dissolve/DynamicShowDisolve.unity
+    guid: e2a53ee86f56d458b9a6f4370c1cec69
+  - enabled: 1
+    path: Assets/ARDance/DynamicShow/SimpleUpDown/DynamicShowSimpleUpDown.unity
+    guid: 7aea67379147543ea9ab6b85d6dd60dd
+  - enabled: 0
+    path: Assets/ARDance/Test/Test2.unity
+    guid: bf327d4ddd958405bb8dcde857618a33
   m_configObjects: {}

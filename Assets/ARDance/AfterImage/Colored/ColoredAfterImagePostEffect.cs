@@ -6,9 +6,9 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
 [RequireComponent(typeof(Camera))]
-public class ColoredAfterImagePostEffect : MonoBehaviour, IAfterImageCommandBuffer
+public class ColoredAfterImagePostEffect : MonoBehaviour, IScreenRTBlit
 {
-    public RenderTexture LatestCameraFeedBuffer => _camerFeedBuffer;
+    public RenderTexture LatestCameraFeedBuffer => _cameraFeedBuffer;
     
     [SerializeField] private AROcclusionManager _occlusionManager;
     [SerializeField] private Shader _shader;
@@ -27,7 +27,7 @@ public class ColoredAfterImagePostEffect : MonoBehaviour, IAfterImageCommandBuff
 
     private readonly List<ColoredAfterImage> _afterImages = new List<ColoredAfterImage>();
     private readonly List<RenderTexture> _stencilBuffers = new List<RenderTexture>();
-    private RenderTexture _camerFeedBuffer;
+    private RenderTexture _cameraFeedBuffer;
 
     private Camera _camera;
 
@@ -66,7 +66,7 @@ public class ColoredAfterImagePostEffect : MonoBehaviour, IAfterImageCommandBuff
             _stencilBuffers.Add(new RenderTexture(resolution.Item1, resolution.Item2, 0));
         }
 
-        _camerFeedBuffer = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, 0);
+        _cameraFeedBuffer = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, 0);
     }
 
     private void Update()
@@ -96,7 +96,7 @@ public class ColoredAfterImagePostEffect : MonoBehaviour, IAfterImageCommandBuff
             {
                 if (i == _afterImages.Count - 1)
                 {
-                    _afterImages[i].DrawCurrenetFrame(_camerFeedBuffer);
+                    _afterImages[i].DrawCurrenetFrame(_cameraFeedBuffer);
                 }
                 else
                 {
