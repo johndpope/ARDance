@@ -1,34 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
-using DG.Tweening;
-using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Camera))]
-[RequireComponent(typeof(BackgroundPinner))]
-public class DynamicShow : MonoBehaviour, IScreenRTBlit, IScreenMeshDraw
+public class SplitSimple : MonoBehaviour, IScreenRTBlit, IScreenMeshDrawMulti
 {
     public RenderTexture LatestCameraFeedBuffer => _cameraFeedBuffer;
-    public Material MeshMaterial => _material;
+    public Material[] MeshMaterials => _materials;
     public bool ShouldDraw => _isShowing;
-
+    
     [SerializeField] private AROcclusionManager _arOcclusionManager;
-    [SerializeField] private Material _material;
     [SerializeField] private Text _pinButtonText;
     [SerializeField] private Text _startButtonText;
-    [SerializeField] private GameObject _canvas;
-
+    [SerializeField] private Material[] _materials;
+    
     private RenderTexture _cameraFeedBuffer;
     private BackgroundPinner _backgroundPinner;
     private Camera _camera;
     private bool _isShowing;
     private Tween _tween;
-
-    protected virtual float _minThreshold { get; } = 0f;
-    protected virtual float _maxThreshold { get; } = 1f;
-    protected virtual float _seekDuration { get; } = 3f;
+    private float _minThreshold { get; } = 0f;
+    private float _maxThreshold { get; } = 0.2f;
+    private float _seekDuration { get; } = 3.5f;
     
     private int PropertyID_UVMultiplierLandScape;
     private int PropertyID_UVMultiplierPortrait;
@@ -36,14 +29,17 @@ public class DynamicShow : MonoBehaviour, IScreenRTBlit, IScreenMeshDraw
     private int PropertyID_OnWide;
     private int PropertyID_StencilTex;
     private int PropertyID_Threshold;
-
+    
     private void Awake()
     {
         _camera = GetComponent<Camera>();
         _backgroundPinner = GetComponent<BackgroundPinner>();
         
         _cameraFeedBuffer = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, 0);
-        _material.mainTexture = _cameraFeedBuffer;
+        foreach (var mat in _materials)
+        {
+            mat.mainTexture = _cameraFeedBuffer;
+        }
 
         PropertyID_UVMultiplierLandScape = Shader.PropertyToID("_UVMultiplierLandScape");
         PropertyID_UVMultiplierPortrait = Shader.PropertyToID("_UVMultiplierPortrait");
@@ -52,12 +48,7 @@ public class DynamicShow : MonoBehaviour, IScreenRTBlit, IScreenMeshDraw
         PropertyID_StencilTex = Shader.PropertyToID("_StencilTex");
         PropertyID_Threshold = Shader.PropertyToID("_Threshold");
     }
-
-    private void Start()
-    {
-        StartCoroutine(ClearText());
-    }
-
+    
     private void Update()
     {
         if (_isShowing)
@@ -65,34 +56,17 @@ public class DynamicShow : MonoBehaviour, IScreenRTBlit, IScreenMeshDraw
             var humanStencil = _arOcclusionManager.humanStencilTexture;
             if (humanStencil)
             {
-                SetMaterialProperty(humanStencil);
+                foreach (var mat in _materials)
+                {
+                    SetMaterialProperty(mat, humanStencil);
+                }
             }
         }
     }
-
+    
     public void TakeBackground()
     {
         _backgroundPinner.TakeBackground();
-    }
-
-    public void HandlePin()
-    {
-        if (_isShowing)
-        {
-            _isShowing = false;
-            _backgroundPinner.Unpin();
-        }
-        else
-        {
-            _isShowing = true;
-            _backgroundPinner.Pin();
-        }
-        _pinButtonText.text = _isShowing ? "UnPin" : "Pin";
-    }
-
-    public void HandleCanvasVisibility()
-    {
-        _canvas.SetActive(!_canvas.activeSelf);
     }
 
     public void HandleSeek()
@@ -107,29 +81,69 @@ public class DynamicShow : MonoBehaviour, IScreenRTBlit, IScreenMeshDraw
             _startButtonText.text = "Stop";
             SeekThreshold();
         }
+        
     }
-    
-    private void SetMaterialProperty(Texture humanStencilTexture)
+    public void HandlePin()
     {
-        if (Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+        if (_isShowing)
         {
-            _material.SetFloat(PropertyID_UVMultiplierLandScape, CalculateUVMultiplierLandScape(humanStencilTexture));
-            _material.SetFloat(PropertyID_UVFlip, 0);
-            _material.SetInt(PropertyID_OnWide, 1);
-        }
-        else if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft)
-        {
-            _material.SetFloat(PropertyID_UVMultiplierLandScape, CalculateUVMultiplierLandScape(humanStencilTexture));
-            _material.SetFloat(PropertyID_UVFlip, 1);
-            _material.SetInt(PropertyID_OnWide, 1);
+            _isShowing = false;
+            _backgroundPinner.Unpin();
         }
         else
         {
-            _material.SetFloat(PropertyID_UVMultiplierPortrait, CalculateUVMultiplierPortrait(humanStencilTexture));
-            _material.SetInt(PropertyID_OnWide, 0);
+            _isShowing = true;
+            _backgroundPinner.Pin();
+        }
+        _pinButtonText.text = _isShowing ? "UnPin" : "Pin";
+    }
+    
+    public void SeekThreshold(Slider slider)
+    {
+        foreach (var mat in _materials)
+        {
+            mat.SetFloat(PropertyID_Threshold, slider.value);
+        }
+    }
+    
+    private void SeekThreshold()
+    {
+        var value = _minThreshold;
+        _tween = DOTween.To(
+            () => value,
+            num => value = num,
+            _maxThreshold,
+            _seekDuration
+        ).OnUpdate(() =>
+        {
+            foreach (var material in _materials)
+            {
+                material.SetFloat(PropertyID_Threshold, value);
+            }
+        }).SetLoops(-1, LoopType.Yoyo);
+    }
+    
+    private void SetMaterialProperty(Material mat, Texture humanStencilTexture)
+    {
+        if (Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+        {
+            mat.SetFloat(PropertyID_UVMultiplierLandScape, CalculateUVMultiplierLandScape(humanStencilTexture));
+            mat.SetFloat(PropertyID_UVFlip, 0);
+            mat.SetInt(PropertyID_OnWide, 1);
+        }
+        else if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft)
+        {
+            mat.SetFloat(PropertyID_UVMultiplierLandScape, CalculateUVMultiplierLandScape(humanStencilTexture));
+            mat.SetFloat(PropertyID_UVFlip, 1);
+            mat.SetInt(PropertyID_OnWide, 1);
+        }
+        else
+        {
+            mat.SetFloat(PropertyID_UVMultiplierPortrait, CalculateUVMultiplierPortrait(humanStencilTexture));
+            mat.SetInt(PropertyID_OnWide, 0);
         }
 
-        _material.SetTexture(PropertyID_StencilTex, humanStencilTexture);
+        mat.SetTexture(PropertyID_StencilTex, humanStencilTexture);
     }
 
     private float CalculateUVMultiplierLandScape(Texture textureFromAROcclusionManager)
@@ -145,39 +159,4 @@ public class DynamicShow : MonoBehaviour, IScreenRTBlit, IScreenMeshDraw
         float cameraTextureAspect = (float) textureFromAROcclusionManager.width / textureFromAROcclusionManager.height;
         return screenAspect / cameraTextureAspect;
     }
-
-    private void SeekThreshold()
-    {
-        var value = _minThreshold;
-        _tween = DOTween.To(
-            () => value,
-            num => value = num,
-            _maxThreshold,
-            3.0f
-        ).OnUpdate(() =>
-        {
-            _material.SetFloat(PropertyID_Threshold, value);
-        }).SetLoops(-1, LoopType.Yoyo);
-    }
-    
-    public void SeekThreshold(Slider slider)
-    {
-        _material.SetFloat(PropertyID_Threshold, slider.value);
-    }
-    
-    #region Debug
-
-    [SerializeField] private Text debug;
-
-    public void DebugLog(string log)
-    {
-        debug.text += log;
-    }
-
-    private IEnumerator ClearText()
-    {
-        yield return new WaitForSeconds(5);
-        debug.text = "";
-    }
-    #endregion
 }
