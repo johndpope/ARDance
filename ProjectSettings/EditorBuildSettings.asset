@@ -23,7 +23,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ARDance/Test/Test2.unity
     guid: bf327d4ddd958405bb8dcde857618a33
-  - enabled: 1
+  - enabled: 0
     path: Assets/ARDance/Split/Split.unity
     guid: 8ec81eb15a51b4005a1cfa0291530f20
+  - enabled: 0
+    path: Assets/ARDance/EdgeDetect/EdgeDetect.unity
+    guid: 8c12e34ef76a14d9bb3932a37d05c734
+  - enabled: 1
+    path: Assets/ARDance/Vfx/VfxCube.unity
+    guid: 58816ebf1249d4834a392cd81b6d153c
   m_configObjects: {}

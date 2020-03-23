@@ -3,16 +3,12 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Threshold ("_Threshold", Range(0.0, 0.5)) = 0.1
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        Tags { "RenderType"="Opaque" }
         LOD 100
 
-        ZWrite Off
-        Blend SrcAlpha OneMinusSrcAlpha 
-        
         Pass
         {
             CGPROGRAM
@@ -38,7 +34,6 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float _Threshold;
 
             v2f vert (appdata v)
             {
@@ -51,12 +46,10 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-//                fixed sep0 = step(i.uv.y, 0.5);
-//                fixed offset0 = (sep0 - 0.5) * 2 * _Threshold;
-//                i.uv.y += offset0;
-                i.uv.y -= _Threshold;
+                // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
-                col.a = step(0.5, i.uv.y);
+                // apply fog
+                UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
             ENDCG
