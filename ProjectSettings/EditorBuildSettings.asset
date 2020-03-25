@@ -21,15 +21,18 @@ EditorBuildSettings:
     path: Assets/ARDance/DynamicShow/SimpleUpDown/DynamicShowSimpleUpDown.unity
     guid: 7aea67379147543ea9ab6b85d6dd60dd
   - enabled: 0
-    path: Assets/ARDance/Test/Test2.unity
-    guid: bf327d4ddd958405bb8dcde857618a33
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/ARDance/Split/Split.unity
     guid: 8ec81eb15a51b4005a1cfa0291530f20
   - enabled: 0
     path: Assets/ARDance/EdgeDetect/EdgeDetect.unity
     guid: 8c12e34ef76a14d9bb3932a37d05c734
-  - enabled: 1
-    path: Assets/ARDance/Vfx/VfxCube.unity
+  - enabled: 0
+    path: Assets/ARDance/Vfx/SimpleCube/SimpleCube.unity
     guid: 58816ebf1249d4834a392cd81b6d153c
+  - enabled: 1
+    path: Assets/ARDance/Vfx/HumanShape/HumanShape.unity
+    guid: 3975a7ddc895f42ccb2c26993ad0a432
   m_configObjects: {}

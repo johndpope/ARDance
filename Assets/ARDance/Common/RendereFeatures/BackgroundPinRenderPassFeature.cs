@@ -46,7 +46,7 @@ public class BackgroundPinRenderPassFeature : ScriptableRendererFeature
     public override void Create()
     {
         _scriptablePass = new BackgroundPinRenderPass();
-        _scriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingTransparents;
+        _scriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingOpaques;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)

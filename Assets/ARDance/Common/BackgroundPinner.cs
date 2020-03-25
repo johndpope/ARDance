@@ -126,7 +126,7 @@ public class BackgroundPinner : MonoBehaviour
             cameraImage.Dispose();
             _arCameraManager.frameReceived -= OnCameraFrameReceived;
         }
-
+        
         _currentBackground.Apply();
     }
     
