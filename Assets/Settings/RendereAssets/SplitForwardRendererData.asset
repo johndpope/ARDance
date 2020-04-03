@@ -50,8 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RendererFeatures:
   - {fileID: -2774851913940163759}
-  - {fileID: -2270810144781030625}
   - {fileID: 976135474327349995}
+  - {fileID: -2270810144781030625}
   - {fileID: -4843546361756622513}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:

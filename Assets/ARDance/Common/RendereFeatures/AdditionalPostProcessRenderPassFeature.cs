@@ -8,14 +8,17 @@ public class AdditionalPostProcessRenderPassFeature : ScriptableRendererFeature
     {
         private IAddtionalPostProcess _postProcess;
         private RenderTargetIdentifier _currentTarget;
+        private RenderTargetIdentifier _depthTarget;
 
-        public void Setup(RenderTargetIdentifier target)
+        public void Setup(RenderTargetIdentifier target, RenderTargetIdentifier depth)
         {
             _currentTarget = target;
+            _depthTarget = depth;
         }
         
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
         {
+            ConfigureTarget(_currentTarget, _depthTarget);
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
@@ -53,7 +56,7 @@ public class AdditionalPostProcessRenderPassFeature : ScriptableRendererFeature
     {
         _scriptablePass = new AdditionalPostProcessRenderPass();
 
-        _scriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
+        _scriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
@@ -61,7 +64,7 @@ public class AdditionalPostProcessRenderPassFeature : ScriptableRendererFeature
         var currentCamera = renderingData.cameraData.camera;
         if (currentCamera != null && currentCamera.cameraType == CameraType.Game)
         {
-            _scriptablePass.Setup(renderer.cameraColorTarget);
+            _scriptablePass.Setup(renderer.cameraColorTarget, renderer.cameraDepth);
             renderer.EnqueuePass(_scriptablePass);
         }
     }

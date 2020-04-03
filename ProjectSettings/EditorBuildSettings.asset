@@ -12,17 +12,11 @@ EditorBuildSettings:
     path: Assets/ARDance/AfterImage/Colored/ColoredAfterImage.unity
     guid: a0bc1bedcc9e64fe697acd384c1b2b85
   - enabled: 0
-    path: Assets/ARDance/Test/Test.unity
-    guid: 23278563ebca245cebd43305e0865ba0
-  - enabled: 0
     path: Assets/ARDance/DynamicShow/Dissolve/DynamicShowDisolve.unity
     guid: e2a53ee86f56d458b9a6f4370c1cec69
   - enabled: 0
     path: Assets/ARDance/DynamicShow/SimpleUpDown/DynamicShowSimpleUpDown.unity
     guid: 7aea67379147543ea9ab6b85d6dd60dd
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/ARDance/Split/Split.unity
     guid: 8ec81eb15a51b4005a1cfa0291530f20
@@ -32,7 +26,28 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ARDance/Vfx/SimpleCube/SimpleCube.unity
     guid: 58816ebf1249d4834a392cd81b6d153c
-  - enabled: 1
+  - enabled: 0
     path: Assets/ARDance/Vfx/HumanShape/HumanShape.unity
     guid: 3975a7ddc895f42ccb2c26993ad0a432
+  - enabled: 0
+    path: Assets/ARDance/Vfx/ShapeDisrupt/ShapeDisrupt.unity
+    guid: 34e51e6218fc14f26a01f63a41bf8cb1
+  - enabled: 0
+    path: Assets/ARDance/Vfx/SimpleShowOff/SimpleShowOff.unity
+    guid: e2e69edda86ed46b5a2714b521c67292
+  - enabled: 0
+    path: Assets/_Works/WhoaPause/WhoaPause.unity
+    guid: 203858bcf79b14c3d87e6f60becfb7ba
+  - enabled: 0
+    path: Assets/ARDance/Dummy/RotateDummy.unity
+    guid: 1c6ac970e98ea4ae49b055f99b22a7fb
+  - enabled: 0
+    path: Assets/_Works/EasyBreezy/EazyBreezy_2.unity
+    guid: 4d7b26f1ccae84aa1bed9e09a3cc40d1
+  - enabled: 0
+    path: Assets/ARDance/Blur/Blur.unity
+    guid: a3f7930ded88a4ac283d261b1881b5eb
+  - enabled: 1
+    path: Assets/ARDance/AfterImage/TexColor/TexColorAfterImage.unity
+    guid: 648c3537b643247b3bbec81281ba641d
   m_configObjects: {}
