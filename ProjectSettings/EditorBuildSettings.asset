@@ -47,7 +47,19 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ARDance/Blur/Blur.unity
     guid: a3f7930ded88a4ac283d261b1881b5eb
-  - enabled: 1
+  - enabled: 0
     path: Assets/ARDance/AfterImage/TexColor/TexColorAfterImage.unity
     guid: 648c3537b643247b3bbec81281ba641d
+  - enabled: 0
+    path: Assets/ARDance/Grid/Grid.unity
+    guid: aa909e728690d4f58ab5a4c489b50642
+  - enabled: 0
+    path: Assets/ARDance/Guardian/Guardian.unity
+    guid: d85ff2f03c0224e26a28f17f2f98120e
+  - enabled: 0
+    path: Assets/ARDance/HumanTexture/HumanTexture.unity
+    guid: fabc4e6f7ecd5448b8ba4d92a538c5a1
+  - enabled: 1
+    path: Assets/ARDance/GalaxySpace/GalaxySpace.unity
+    guid: c6f1ef8ae0a89471abe39bc874b0d267
   m_configObjects: {}

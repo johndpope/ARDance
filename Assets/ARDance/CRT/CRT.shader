@@ -83,32 +83,30 @@
 				// 色を計算
 				float3 col;
  
-//				// ノイズ、オフセットを適用
-//				texUV.x += sin(texUV.y * _SinNoiseWidth + _SinNoiseOffset) * _SinNoiseScale;
-//				texUV += _Offset;
-//				texUV.x += (rand(floor(texUV.y * 500) + _Time.y) - 0.5) * _NoiseX;
-//				texUV = mod(texUV, 1);
-// 
-//				// 色を取得、RGBを少しずつずらす
-//				col.r = tex2D(_MainTex, texUV).r;
-//				col.g = tex2D(_MainTex, texUV - float2(0.002, 0)).g;
-//				col.b = tex2D(_MainTex, texUV - float2(0.004, 0)).b;
-// 
-//				// RGBノイズ
-//				if (rand((rand(floor(texUV.y * 500) + _Time.y) - 0.5) + _Time.y) < _RGBNoise)
-//				{
-//					col.r = rand(uv + float2(123 + _Time.y, 0));
-//					col.g = rand(uv + float2(123 + _Time.y, 1));
-//					col.b = rand(uv + float2(123 + _Time.y, 2));
-//				}
-// 
-//				// ピクセルごとに描画するRGBを決める
-//				float floorX = fmod(inUV.x * _ScreenParams.x / 3, 1);
-//				col.r *= floorX > 0.3333;
-//				col.g *= floorX < 0.3333 || floorX > 0.6666;
-//				col.b *= floorX < 0.6666;
-
-                col = tex2D(_MainTex, texUV);
+				// ノイズ、オフセットを適用
+				texUV.x += sin(texUV.y * _SinNoiseWidth + _SinNoiseOffset) * _SinNoiseScale;
+				texUV += _Offset;
+				texUV.x += (rand(floor(texUV.y * 500) + _Time.y) - 0.5) * _NoiseX;
+				texUV = mod(texUV, 1);
+ 
+				// 色を取得、RGBを少しずつずらす
+				col.r = tex2D(_MainTex, texUV).r;
+				col.g = tex2D(_MainTex, texUV - float2(0.002, 0)).g;
+				col.b = tex2D(_MainTex, texUV - float2(0.004, 0)).b;
+ 
+				// RGBノイズ
+				if (rand((rand(floor(texUV.y * 500) + _Time.y) - 0.5) + _Time.y) < _RGBNoise)
+				{
+					col.r = rand(uv + float2(123 + _Time.y, 0));
+					col.g = rand(uv + float2(123 + _Time.y, 1));
+					col.b = rand(uv + float2(123 + _Time.y, 2));
+				}
+ 
+				// ピクセルごとに描画するRGBを決める
+				float floorX = fmod(inUV.x * _ScreenParams.x / 3, 1);
+				col.r *= floorX > 0.3333;
+				col.g *= floorX < 0.3333 || floorX > 0.6666;
+				col.b *= floorX < 0.6666;
  
 				// スキャンラインを描画
 				float scanLineColor = sin(_Time.y * 10 + uv.y * 500) / 2 + 0.5;

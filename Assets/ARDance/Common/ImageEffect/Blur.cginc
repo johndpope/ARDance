@@ -4,7 +4,6 @@
 half4 _Offsets;
 static const int samplingCount = 10;
 half _Weights[samplingCount];
-sampler2D _StencilTex;
 float4 _BlurColor;
 float _BlurColorPower;
 

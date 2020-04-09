@@ -43,6 +43,7 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            sampler2D _StencilTex;
             float _OnReverseMul;
             float _OnReversePlu;
 

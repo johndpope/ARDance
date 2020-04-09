@@ -54,7 +54,7 @@
                     discard;
                 }
                 fixed4 col = lerp(tex2D(_MainTex, i.uv), _Color, 0.3);
-                col *= ScanLine(i.uv);
+                col *= ScanLineH(i.uv);
                 return col;
             }
             ENDCG

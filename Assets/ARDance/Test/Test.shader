@@ -3,6 +3,9 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        [HDR] _Color ("Color", Color) = (1, 1, 1, 1)
+        _Power ("Power", Range(0.0, 1.0)) = 0.0
+        _Speed ("Speed", Range(0.0, 1.0)) = 0.0
     }
     SubShader
     {
@@ -34,6 +37,9 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float4 _Color;
+            float _Power;
+            float _Speed;
 
             v2f vert (appdata v)
             {
@@ -46,8 +52,8 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
+                i.uv.y += _Time.y * _Speed;
+                fixed4 col = tex2D(_MainTex, i.uv) * _Color;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
