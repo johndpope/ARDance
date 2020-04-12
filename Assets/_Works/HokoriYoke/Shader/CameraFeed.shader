@@ -2,13 +2,17 @@
 {
     Properties
 	{
-		_Threshold ("Threshold", Range(0.0, 1.0)) = 1
+	    [HDR] _Color ("Color", Color) = (1, 1, 1, 1)
+		_Threshold ("Threshold", Range(-0.2, 1.2)) = 1
+		_Width ("Width", Range(0.0, 0.3)) = 0.1
+		_Power ("Power", Range(1.0, 6.0)) = 1.0
 	}
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" "IgnoreProjector"="True" }
         LOD 100
-        Cull Off ZTest Always
+        ZTest Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {   
@@ -17,7 +21,7 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Assets/ARDance/Common/Util/CameraFeed.cginc"
+            #include "Assets/ARDance/_Common/Util/CameraFeed.cginc"
 
             struct appdata
             {
@@ -32,7 +36,10 @@
                 float4 vertex : SV_POSITION;
             };
             
+            float4 _Color;
 			float _Threshold;
+			float _Width;
+			float _Power;
 
             v2f vert (appdata v)
             {
@@ -45,11 +52,11 @@
             
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 camCol = CameraColor(i.uvCameraFeed);
-                if (i.uv.y > _Threshold) {
-                    discard;
-                }
-                return camCol;
+                fixed4 camCol = CameraColor(i.uvCameraFeed);;
+                float edgeSmooth = 1 - smoothstep(_Threshold - _Width, _Threshold, i.uv.y);
+                float edgeUp = smoothstep(_Threshold - _Width, _Threshold + _Width, i.uv.y);
+                float edgeDown = 1 - smoothstep(_Threshold - _Width, _Threshold + _Width, i.uv.y);
+                return camCol * edgeSmooth + _Color * edgeUp * edgeDown * _Power;
             }
             ENDCG
         }

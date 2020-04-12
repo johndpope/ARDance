@@ -1,11 +1,13 @@
-﻿Shader "Unlit/BlurNEdge"
+﻿Shader "Unlit/EdgeWithTexture"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _EffectTex ("Effect Texture", 2D) = "white" {}
         _Sensitivity ("Sensitivity", float) = 1.0
         _Threshold ("Threshold", float) = 0.0
-        _EdgeColor ("Edge Color", COLOR) = (1,1,1,1)
+        _Speed ("Speed", Range(0.0, 1.0)) = 0.015
+        [HDR] _EdgeColor ("Edge Color", COLOR) = (1,1,1,1)
         _BaseColor ("Base Color", COLOR) = (1,1,1,1)
     }
     SubShader
@@ -44,8 +46,10 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             sampler2D _StencilTex;
+            sampler2D _EffectTex;
             float _OnReverseMul;
             float _OnReversePlu;
+            float _Speed;
 
             v2f vert (appdata v)
             {
@@ -63,9 +67,10 @@
                 float seg = step(1, stencilCol);
                 seg = seg * (-1 * _OnReverseMul) + (1 + _OnReversePlu);
                 if (seg < 1) {
-                    return EdgeMonocro(_MainTex, i.uvEdge);
+                    i.uv2 += _Time.y * _Speed;
+                    return EdgeWithColor(_MainTex, i.uvEdge, tex2D(_EffectTex, i.uv2));
                 } else {
-                    return BlurWithColor(_MainTex, i.uv);
+                    return tex2D(_MainTex, i.uv);
                 }
             }
             ENDCG

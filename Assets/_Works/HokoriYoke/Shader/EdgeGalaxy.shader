@@ -1,11 +1,14 @@
-﻿Shader "Unlit/HumanGalaxy"
+﻿Shader "Unlit/EdgeGalaxy"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
         _EffectTex ("Effect Texture", 2D) = "white" {}
-        [HDR] _Color ("Color", Color) = (1, 1, 1, 1)
+        [HDR] _EdgeColor ("EdgeColor", Color) = (1, 1, 1, 1)
         _Speed ("Speed", Range(0.0, 1.0)) = 0.015
+        _Sensitivity ("Sensitivity", float) = 1.0
+        _Threshold ("Threshold", float) = 0.0
+        [HDR] _TransitionColor("TransitionColor", Color) = (1, 1, 1, 1)
     }
     SubShader
     {
@@ -19,7 +22,9 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Assets/ARDance/Common/Util/UVAdjust.cginc"
+            #include "Assets/ARDance/_Common/Util/UVAdjust.cginc"
+            #include "Assets/ARDance/_Common/ImageEffect/Edge.cginc"
+            #include "Assets/ARDance/_Common/Util/Transition.cginc"
 
             struct appdata
             {
@@ -38,7 +43,6 @@
             sampler2D _EffectTex;
             sampler2D _StencilTex;
             float4 _MainTex_ST;
-            float4 _Color;
             float _Speed;
 
             v2f vert (appdata v)
@@ -57,7 +61,7 @@
                     discard;
                 }
                 i.uv2 += _Time.y * _Speed;
-                return tex2D(_EffectTex, i.uv2) * _Color;
+                return TransitWithColor(EdgeWithColor(_MainTex, i.uv, tex2D(_EffectTex, i.uv2)));
             }
             ENDCG
         }

@@ -43,7 +43,7 @@ public class EdgeDetect : MonoBehaviour, IAddtionalPostProcess
     private void Start()
     {
         StartCoroutine(ClearText());
-        ChangeColor();
+        //ChangeColor();
     }
 
     private void Update()

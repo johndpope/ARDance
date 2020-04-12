@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _arOcclusionManager: {fileID: 1335839536}
-  _material: {fileID: 2100000, guid: 27d6ffbe7500244969a5ac05a6628733, type: 2}
+  _material: {fileID: 2100000, guid: 94c63b1b470e649ff92da4265ce1a7cc, type: 2}
   debug: {fileID: 1160815919}
 --- !u!114 &282840816
 MonoBehaviour:

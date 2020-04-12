@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradMap:
-        m_Texture: {fileID: 2800000, guid: 93967b4ac14224b3b94ecf035a438dc1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5b0973fc51b674777a54bdce8dff4953, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HumanDepth:
@@ -48,6 +48,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Threshold: 0.65507865
+    - _Threshold: 0.4698258
+    - _Width: 0.075
     m_Colors:
-    - _GridColor: {r: 4.5254836, g: 0.5767773, b: 4.8582397, a: 1}
+    - _GridColor: {r: 5.992157, g: 1.3399718, b: 0.3137254, a: 1}
+    - _TransitionColor: {r: 8, g: 8, b: 8, a: 1}

@@ -56,7 +56,7 @@ public class AdditionalPostProcessRenderPassFeature : ScriptableRendererFeature
     {
         _scriptablePass = new AdditionalPostProcessRenderPass();
 
-        _scriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
+        _scriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CRTEffect : MonoBehaviour, IAddtionalPostProcess
+public class CRTEffect : HumanSegmentationEffectBase, IAddtionalPostProcess
 {
     public Material MaterialForPostProcess => _material;
     public bool IsEnable => true;
@@ -11,14 +12,6 @@ public class CRTEffect : MonoBehaviour, IAddtionalPostProcess
     [SerializeField] private Shader _shader;
     [SerializeField] private Material _material;
 
-    private void Awake()
-    {
-        if (_shader)
-        {
-            _material = new Material(_shader);
-        }
-    }
-    
     float totalTime = 0.0f;
     float time = 0.0f;
     float noisePower = 0.0f;
@@ -50,11 +43,17 @@ public class CRTEffect : MonoBehaviour, IAddtionalPostProcess
 
     private void Start()
     {
+        if (_shader)
+        {
+            _material = new Material(_shader);
+        }
+        _humanSegmentMats = new List<Material> { _material };
         StartCoroutine(RandomInterval());
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         float t = time / totalTime;
         float nt = Mathf.Clamp01(t / noisyTime);
         float np = baseNoisePower + noisePower * (1 - nt);

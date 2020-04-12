@@ -19,7 +19,7 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Assets/ARDance/Common/Util/UVAdjust.cginc"
+            #include "Assets/ARDance/_Common/Util/UVAdjust.cginc"
 
             struct appdata
             {

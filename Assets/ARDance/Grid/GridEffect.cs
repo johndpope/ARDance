@@ -51,10 +51,10 @@ public class GridEffect : MonoBehaviour, IAddtionalPostProcess
 
     private void ChangeThresholdAuto()
     {
-        var value = 0f;
-        DOTween.To(() => value, num => value = num, 1.2f, 2f).OnUpdate(() =>
+        var value = 0.05f;
+        DOTween.To(() => value, num => value = num, 0.545f, 1.2f).OnUpdate(() =>
         {
             _material.SetFloat("_Threshold", value);
-        }).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+        }).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
     }
 }

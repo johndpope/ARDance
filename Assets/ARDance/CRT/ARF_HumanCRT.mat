@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PostEffects_CRT
-  m_Shader: {fileID: 4800000, guid: e16e1683fbbca4e33a01977635f08023, type: 3}
+  m_Name: ARF_HumanCRT
+  m_Shader: {fileID: 4800000, guid: 8ac3ba5fe951049288d2b9def514de5e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -24,12 +24,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _NoiseX: 0
-    - _RGBNoise: 0
+    - _NoiseX: 0.0024245153
+    - _RGBNoise: 0.0033943213
     - _ScanLineSpeed: 100
     - _ScanLineTail: 0.5
-    - _SinNoiseOffset: 0.037137683
-    - _SinNoiseScale: 0
-    - _SinNoiseWidth: 7.2220087
+    - _SinNoiseOffset: 0.04270287
+    - _SinNoiseScale: 0.0048490306
+    - _SinNoiseWidth: 5.1626263
+    - _TransitionThreshold: 0
     m_Colors:
-    - _Offset: {r: 0.031873237, g: 0.0007699788, b: 0, a: 0}
+    - _Offset: {r: -0.10224955, g: 0.11153813, b: 0, a: 0}
+    - _TransitionColor: {r: 8, g: 8, b: 8, a: 1}

@@ -1,14 +1,14 @@
-﻿Shader "Unlit/ColoredAfterImage"
+﻿Shader "ARF/HumanStencilMask"
 {
     Properties
-    {
-        _Color ("_Color", Color) = (0, 0, 0, 0)
-    }
+	{
+		_MainTex ("Texture", 2D) = "white" {}
+	}
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
-        Cull Off ZWrite Off ZTest Always
+        Cull Off ZTest Always
 
         Pass
         {
@@ -17,8 +17,6 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Assets/ARDance/_Common/Util/UVAdjust.cginc"
-            #include "Assets/ARDance/_Common/ImageEffect/CRT.cginc"
 
             struct appdata
             {
@@ -35,26 +33,37 @@
             };
             
             sampler2D _MainTex;
-            fixed4 _Color;
             sampler2D _StencilTex;
+            float _UVMultiplierLandScape;
+            float _UVMultiplierPortrait;
+            float _UVFlip;
+            int _OnWide;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-                o.uv2 = UV2(o.uv);
+                if(_OnWide == 1)
+                {
+                    o.uv1 = float2(v.uv.x, (1.0 - (_UVMultiplierLandScape * 0.5f)) + (v.uv.y / _UVMultiplierLandScape));
+                    o.uv2 = float2(lerp(1.0 - o.uv1.x, o.uv1.x, _UVFlip), lerp(o.uv1.y, 1.0 - o.uv1.y, _UVFlip));
+                }
+                else
+                {
+                    float2 forMask = float2((1.0 - (_UVMultiplierPortrait * 0.5f)) + (v.uv.x / _UVMultiplierPortrait), v.uv.y);
+                    o.uv2 = float2(lerp(1.0 - forMask.y, forMask.y, 0), lerp(forMask.x, 1.0 - forMask.x, 1));
+                }
                 return o;
             }
             
             fixed4 frag (v2f i) : SV_Target
             {
+                fixed4 col = tex2D(_MainTex, i.uv);
                 float stencilCol = tex2D(_StencilTex, i.uv2);
                 if (stencilCol < 1) {
                     discard;
                 }
-                fixed4 col = lerp(tex2D(_MainTex, i.uv), _Color, 0.3);
-                col *= ScanLineH(i.uv);
                 return col;
             }
             ENDCG

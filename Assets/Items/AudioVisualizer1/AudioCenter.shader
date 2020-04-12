@@ -21,7 +21,7 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Assets/ARDance/Common/Util/ShaderTools.cginc"
+            #include "Assets/ARDance/_Common/Util/ShaderTools.cginc"
 
             struct appdata
             {

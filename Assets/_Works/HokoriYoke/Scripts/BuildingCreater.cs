@@ -19,6 +19,21 @@ public class BuildingCreater : MonoBehaviour
 
     private void Start()
     {
+        Create();
+    }
+
+    public void ReCreate()
+    {
+        foreach (var cube in _cubes)
+        {
+            Destroy(cube.gameObject);
+        }
+        _cubes.Clear();
+        Create();
+    }
+
+    private void Create()
+    {
         for (int i = 0; i < _num; i++)
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
@@ -36,7 +51,6 @@ public class BuildingCreater : MonoBehaviour
             _cubes.Add(cube);
         }
     }
-
 
     private void SetPos(Transform before, Transform self)
     {

@@ -13,8 +13,8 @@ public class HumanSegmentationEffectBase : MonoBehaviour
 
     protected bool _isSegementationActive = true;
     protected UVAdjuster _uvAdjuster;
-    protected List<Material> _humanSegmentMats = new List<Material>();
-    protected List<Material> _cameraFeedMats = new List<Material>();
+    protected List<Material> _humanSegmentMats;
+    protected List<Material> _cameraFeedMats;
 
     private UniversalAdditionalCameraData _universalAdditionalCameraData;
     private readonly int k_DisplayTransformId = Shader.PropertyToID("_UnityDisplayTransform");

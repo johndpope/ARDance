@@ -337,8 +337,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2abfa71b045b45d19979f21c70214e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _arOcclusionManager: {fileID: 1335839536}
+  _useStencilForSegmentation: 1
+  _useDepthForSegmentation: 0
+  _debug: {fileID: 0}
   _shader: {fileID: 0}
-  _material: {fileID: 2100000, guid: 547973033f6f1471c9a8dc3048b6441c, type: 2}
+  _material: {fileID: 2100000, guid: addb9b2031fda40cca886ef776de67ee, type: 2}
 --- !u!114 &282840816
 MonoBehaviour:
   m_ObjectHideFlags: 0
