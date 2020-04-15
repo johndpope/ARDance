@@ -82,3 +82,108 @@ inline fixed4 HSLtoRGB(fixed4 hsl) {
 	
 	return rgb;
 }
+
+inline float4 rgb2hsv(float4 rgb)
+{
+    float4 hsv = float4(0, 0, 0, rgb.w);
+
+    // RGBの三つの値で最大のもの
+    float maxValue = max(rgb.r, max(rgb.g, rgb.b));
+    // RGBの三つの値で最小のもの
+    float minValue = min(rgb.r, min(rgb.g, rgb.b));
+    // 最大値と最小値の差
+    float delta = maxValue - minValue;
+    
+    // V（明度）
+    // 一番強い色をV値にする
+    hsv.z = maxValue;
+    
+    // S（彩度）
+    // 最大値と最小値の差を正規化して求める
+    if (maxValue != 0.0){
+        hsv.y = delta / maxValue;
+    } else {
+        hsv.y = 0.0;
+    }
+    
+    // H（色相）
+    // RGBのうち最大値と最小値の差から求める
+    if (hsv.y > 0.0){
+        if (rgb.r == maxValue) {
+            hsv.x = (rgb.g - rgb.b) / delta;
+        } else if (rgb.g == maxValue) {
+            hsv.x = 2 + (rgb.b - rgb.r) / delta;
+        } else {
+            hsv.x = 4 + (rgb.r - rgb.g) / delta;
+        }
+        hsv.x /= 6.0;
+        if (hsv.x < 0)
+        {
+            hsv.x += 1.0;
+        }
+    }
+    
+    return hsv;
+}
+        
+// HSV->RGB変換
+inline float4 hsv2rgb(float4 hsv)
+{
+    float4 rgb = float4(0, 0, 0, hsv.w);
+
+    if (hsv.y == 0){
+        // S（彩度）が0と等しいならば無色もしくは灰色
+        rgb.r = rgb.g = rgb.b = hsv.z;
+    } else {
+        // 色環のH（色相）の位置とS（彩度）、V（明度）からRGB値を算出する
+        hsv.x *= 6.0;
+        float i = floor (hsv.x);
+        float f = hsv.x - i;
+        float aa = hsv.z * (1 - hsv.y);
+        float bb = hsv.z * (1 - (hsv.y * f));
+        float cc = hsv.z * (1 - (hsv.y * (1 - f)));
+        if( i < 1 ) {
+            rgb.r = hsv.z;
+            rgb.g = cc;
+            rgb.b = aa;
+        } else if( i < 2 ) {
+            rgb.r = bb;
+            rgb.g = hsv.z;
+            rgb.b = aa;
+        } else if( i < 3 ) {
+            rgb.r = aa;
+            rgb.g = hsv.z;
+            rgb.b = cc;
+        } else if( i < 4 ) {
+            rgb.r = aa;
+            rgb.g = bb;
+            rgb.b = hsv.z;
+        } else if( i < 5 ) {
+            rgb.r = cc;
+            rgb.g = aa;
+            rgb.b = hsv.z;
+        } else {
+            rgb.r = hsv.z;
+            rgb.g = aa;
+            rgb.b = bb;
+        }
+    }
+    return rgb;
+}
+
+float3 hsv2rgb(float3 c)
+{
+    float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+float3 rgb2hsv(float3 c)
+{
+    float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
+    float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
+ 
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    return float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}

@@ -129,7 +129,8 @@ MonoBehaviour:
   _audioSource: {fileID: 0}
   _radius: 3
   _num: 90
-  _amp: 120
+  _ampForBeat: 5
+  _ampForSpectrumBar: 120
   _maxValue: 6
   _baseColor: {r: 0, g: 0.99272245, b: 1.0592737, a: 1}
   _hueShift: 0.002
@@ -146,7 +147,7 @@ GameObject:
   - component: {fileID: 9116635340203341148}
   - component: {fileID: 9116635340203341149}
   m_Layer: 0
-  m_Name: Ring
+  m_Name: CenterRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -35,7 +35,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ARDance/Vfx/SimpleShowOff/SimpleShowOff.unity
     guid: e2e69edda86ed46b5a2714b521c67292
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Works/WhoaPause/WhoaPause.unity
     guid: 203858bcf79b14c3d87e6f60becfb7ba
   - enabled: 0
@@ -65,4 +65,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ARDance/CRT/CRT.unity
     guid: d32121ec4e3154d97b7f83145b3298a0
+  - enabled: 0
+    path: Assets/_Works/Fiasco/Fiasco.unity
+    guid: 449bbecb84664421682e8dfbe90d5bd6
+  - enabled: 0
+    path: Assets/ARDance/Rotate/Rotate.unity
+    guid: 6bdc458ed85ef49a6aef5da2cec43a64
+  - enabled: 1
+    path: Assets/ARDance/AfterImage/MotionBlur/MotionBlur.unity
+    guid: b57755959775346cf846ce5421e43a60
   m_configObjects: {}

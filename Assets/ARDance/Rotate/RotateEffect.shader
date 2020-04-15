@@ -1,18 +1,13 @@
-﻿Shader "AV/AudioCenterObj"
+﻿Shader "Unlit/RotateEffect"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        [HDR] _Color ("Color", Color) = (1, 1, 1, 1)
-        _HueShift ("HueShift", Range(0.0, 1.0)) = 0.002
-        _Speed ("Speed", Range(0.0, 2.0)) = 1.0
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" "IgnoreProjector"="True" }
+        Tags { "RenderType"="Opaque" }
         LOD 100
-        ZWrite Off 
-        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -21,7 +16,6 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Assets/ARDance/_Common/Util/ShaderTools.cginc"
 
             struct appdata
             {
@@ -36,11 +30,11 @@
             };
 
             sampler2D _MainTex;
-            float4 _Color;
-            float _Radius;
-            float _Width;
-            float _HueShift;
-            float _Speed;
+            float4 _MainTex_ST;
+            uniform float4 _CenterRadius;
+			uniform float4x4 _RotationMatrix;
+
+            #define PI 3.141592
 
             v2f vert (appdata v)
             {
@@ -51,13 +45,15 @@
             }
 
             fixed4 frag (v2f i) : SV_Target
-            {	
-                float4 texCol = tex2D(_MainTex, i.uv);
-				float dist = distance(i.uv, float2(0, 0));
-				fixed4 hsl = RGBtoHSL(_Color);
-				hsl.x += pow((dist), 0.2) * _HueShift + _Time.y * _Speed;
-				hsl.x = frac(hsl.x);
-                fixed4 col = texCol * HSLtoRGB(hsl);
+            {
+                float2 offset = i.uv - _CenterRadius.xy;
+				float2 distortedOffset = MultiplyUV (_RotationMatrix, offset.xy);
+				float2 tmp = offset / _CenterRadius.zw;
+				float t = min (1, length(tmp));
+				
+				offset = lerp (distortedOffset, offset, t);
+				offset += _CenterRadius.xy;
+                fixed4 col = tex2D(_MainTex, offset);
                 return col;
             }
             ENDCG

@@ -20,9 +20,12 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _HueShift: 0.152
+    - _Fuga: 1
+    - _Hoge: 1
+    - _HueShift: 1.273
     - _Radius: 0.374
     - _RimPower: 0.19
+    - _ShiftPower: 0.751
     - _Width: 0.0144
     m_Colors:
     - _Color: {r: 0, g: 2.6287735, b: 2.828427, a: 1}

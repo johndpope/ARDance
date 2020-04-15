@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,12 +8,13 @@ public class AVController : MonoBehaviour
 {
     [SerializeField] private GameObject _avlPrefab;
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private float _radius;
-    [SerializeField] private int _num;
-    [SerializeField] private float _amp;
-    [SerializeField] private float _maxValue;
+    [SerializeField] private float _radius = 3;
+    [SerializeField] private int _num = 90;
+    [SerializeField] private float _ampForBeat = 5f;
+    [SerializeField] private float _ampForSpectrumBar = 120f;
+    [SerializeField] private float _maxValue = 6f;
     [SerializeField] [ColorUsage(false, true)] private Color _baseColor;
-    [SerializeField] private float _hueShift;
+    [SerializeField] private float _hueShift = 0.002f;
     [SerializeField] private Transform _centerObj;
     
 
@@ -41,10 +41,10 @@ public class AVController : MonoBehaviour
         _audioSpectrum.GetSpectrum(); 
         for (int i = 0; i < _audioSpectrum.MaxInEachUnit.Length; i++)
         {
-            _avLights[i].ChangeLightLength(Mathf.Min(_maxValue, _audioSpectrum.MaxInEachUnit[i] * _amp));
+            _avLights[i].ChangeLightLength(Mathf.Min(_maxValue, _audioSpectrum.MaxInEachUnit[i] * _ampForSpectrumBar));
         }
 
-        var value = _audioSpectrum.Max * 5f;
+        var value = _audioSpectrum.Max * _ampForBeat;
         if (value > 1f)
         {
             transform.localScale = Vector3.one * value;
@@ -55,6 +55,7 @@ public class AVController : MonoBehaviour
         }
     }
 
+    # region Spectrum Bar
     private void Setup()
     {
         for (int i = 0; i < _num; i++)
@@ -90,8 +91,10 @@ public class AVController : MonoBehaviour
         {
             h += _hueShift * (_num - index);
         }
+        h -= Mathf.Floor(h);
         return Color.HSVToRGB(h, s, v);
     }
+    #endregion
 
     private IEnumerator RotateRandom()
     {
