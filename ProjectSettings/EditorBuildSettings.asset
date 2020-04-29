@@ -66,12 +66,33 @@ EditorBuildSettings:
     path: Assets/ARDance/CRT/CRT.unity
     guid: d32121ec4e3154d97b7f83145b3298a0
   - enabled: 0
-    path: Assets/_Works/Fiasco/Fiasco.unity
+    path: Assets/_Works/Pending/Pending.unity
     guid: 449bbecb84664421682e8dfbe90d5bd6
   - enabled: 0
     path: Assets/ARDance/Rotate/Rotate.unity
     guid: 6bdc458ed85ef49a6aef5da2cec43a64
-  - enabled: 1
+  - enabled: 0
     path: Assets/ARDance/AfterImage/MotionBlur/MotionBlur.unity
     guid: b57755959775346cf846ce5421e43a60
+  - enabled: 0
+    path: Assets/ARDance/Ripple/RippleColor.unity
+    guid: 0dce347a5b29846fb8bcabd9b7744c11
+  - enabled: 0
+    path: Assets/_Works/Fiasco/Fiasco.unity
+    guid: 32255e43a29ff43ecae48069242003b1
+  - enabled: 0
+    path: Assets/MotionCapture/HumanBodyTracking3DSample.unity
+    guid: fadc7990c13f74702b8ac44a7cb7115a
+  - enabled: 0
+    path: Assets/MotionCapture/Keijiro/SmrVfx/SmrVfx.unity
+    guid: 15666b7e813ba40f6ac23c3dbfebb9fd
+  - enabled: 0
+    path: Assets/MotionCapture/Keijiro/VfxGraphTestbed/Sketch1013/LightningOnHuman.unity
+    guid: ae35deb6a78b3490799e408e4fdb0cc8
+  - enabled: 0
+    path: Assets/_Works/ShapeOfYou/ShapeOfYou.unity
+    guid: 5894e27ab69b943939f9dd616d68400d
+  - enabled: 1
+    path: Assets/MotionCapture/HandTrail/HandTrail.unity
+    guid: fd003dd55a51b423ebbe63ca67f13abe
   m_configObjects: {}

@@ -101,7 +101,7 @@ public class AVController : MonoBehaviour
         while (gameObject.activeSelf)
         {
             yield return new WaitForSeconds(Random.Range(3, 6));
-            transform.DORotate(new Vector3(0, 0, Random.Range(0, 360)), 0.2f);
+            transform.DORotate(new Vector3(transform.localEulerAngles.x, 0, Random.Range(0, 360)), 0.2f);
         }
     }
     

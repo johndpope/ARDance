@@ -61,7 +61,7 @@
 				float dist = distance(i.uv, float2(0.5, 0.5));
 				float over = 1 - smoothstep(_Radius, _Radius + _Width, dist);
 				float under = smoothstep(_Radius - _Width, _Radius, dist);
-				fixed4 hsl = rgb2hsv(_Color);
+				fixed3 hsl = rgb2hsvShort(_Color.xyz);
 				//hsl.x += pow((1 - i.uv.x), 0.2) * _HueShift;
 				float2 axis = float2(-1, 0);
 				float2 vec = normalize(float2(0.5, 0.5) - i.uv);
@@ -70,7 +70,7 @@
 				hsl.x = frac(hsl.x);
 				hsl.y += _Hoge;
 				hsl.z += _Fuga;
-                fixed4 col = hsv2rgb(hsl) * over * under;
+                fixed4 col = fixed4(hsv2rgbShort(hsl.rgb), 1) * over * under;
                 return col;
             }
             ENDCG

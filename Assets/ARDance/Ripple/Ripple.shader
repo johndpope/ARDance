@@ -2,7 +2,9 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _DeltaUV("Delta UV", Float) = 3
+        _Speed("Speed", Range(0.0, 0.5)) = 0.5
+        _Attenuation("Attenuation", Range(0.0, 1.0)) = 0.999
     }
     SubShader
     {
@@ -14,8 +16,6 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
@@ -28,28 +28,46 @@
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            sampler2D _Prev_1;
+            sampler2D _Prev_2;
+            sampler2D _TriggerTexture;
+            
+            float _TextureWidth;
+            float _TextureHeight;
+            float _DeltaUV;
+            float _Speed;
+            float _Attenuation;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                o.uv = v.uv;
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
+                float du = 1.0 / _TextureWidth;
+                float dv = 1.0 / _TextureHeight;
+                float3 duv = float3(du, dv, 0) * _DeltaUV;
+                
+                // Get current acceleration
+                fixed curAccel = tex2D(_Prev_1, i.uv) - tex2D(_Prev_2, i.uv);
+                // Apply Laplacian filter to update acceleration
+                fixed accel = tex2D(_Prev_1, i.uv + duv.xz)
+                             + tex2D(_Prev_1, i.uv - duv.xz)
+                             + tex2D(_Prev_1, i.uv + duv.zy)
+                             + tex2D(_Prev_1, i.uv - duv.zy)
+                             - tex2D(_Prev_1, i.uv) * 4.0;
+                // Multiply propagation speed
+                accel *= _Speed;
+                fixed h = (tex2D(_Prev_1, i.uv) + curAccel + accel) * _Attenuation;
+                h += tex2D(_TriggerTexture, i.uv);
+                fixed4 col = fixed4(h, 0, 0, 1);
                 return col;
             }
             ENDCG
