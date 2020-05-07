@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Yorunikakeru
@@ -17,7 +18,13 @@ namespace Yorunikakeru
         [SerializeField] private Material[] _thirdTeleportMats = new Material[2];
 
         private readonly int PropertyID_DistortionPower = Shader.PropertyToID("_DistortionPower");
-        
+        private int _teleportIndex;
+
+        private void Start()
+        {
+            Reset();
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -48,6 +55,7 @@ namespace Yorunikakeru
 
         private void Reset()
         {
+            _teleportIndex = 0;
             _centerHuman.SetActive(true); 
             _rightHuman.SetActive(false);
             _leftHuman.SetActive(false);
@@ -58,8 +66,25 @@ namespace Yorunikakeru
             _thirdTeleportMats[1].SetFloat(PropertyID_DistortionPower, 0.3f);
             _scatterVfx.SetActive(false);
         }
+
+        public void Teleport()
+        {
+            if (_teleportIndex == 0)
+            {
+                FirstTeleport();
+            }
+            else if (_teleportIndex == 1)
+            {
+                SecondTeleport();
+            }
+            else
+            {
+                ThirdTeleport();
+            }
+            _teleportIndex++;
+        }
         
-        public void FirstTeleport()
+        private void FirstTeleport()
         {
             Move2Single(_firstTeleportMats[0], 0, -0.4f, 0.1f, Ease.InSine).OnComplete(() => 
             { 
@@ -69,7 +94,7 @@ namespace Yorunikakeru
             });
         }
         
-        public void SecondTeleport()
+        private void SecondTeleport()
         {
             Move2Single(_secondTeleportMats[0], 0, 0.45f, 0.1f, Ease.InSine).OnComplete(() => 
             { 
@@ -79,7 +104,7 @@ namespace Yorunikakeru
             });
         }
         
-        public void ThirdTeleport()
+        private void ThirdTeleport()
         {
             Move2Single(_thirdTeleportMats[0], 0, -0.4f, 0.1f, Ease.InSine).OnComplete(() => 
             { 
