@@ -3,6 +3,8 @@
     Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
+		_StencilTex ("StencilTex", 2D) = "white" {}
+		[Toggle(ADJUST_UV)] _ShouldAdjustUV("ShouldAdjustUV", Float) = 0
 	}
     SubShader
     {
@@ -15,6 +17,7 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma shader_feature ADJUST_UV
 
             #include "UnityCG.cginc"
 
@@ -60,7 +63,12 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
+#ifdef ADJUST_UV
                 float stencilCol = tex2D(_StencilTex, i.uv2);
+#else
+                float stencilCol = tex2D(_StencilTex, i.uv);
+#endif
+                
                 if (stencilCol < 1) {
                     discard;
                 }

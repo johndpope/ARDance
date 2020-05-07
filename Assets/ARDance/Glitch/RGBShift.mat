@@ -21,10 +21,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a698cac6280db471d8a6077e45fa9455, type: 3}
+        m_Texture: {fileID: 2800000, guid: 974230c1504fa479e8c15015f265872a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StencilTex:
+        m_Texture: {fileID: 2800000, guid: 942596e45960b4d25a7c87ec8fd51549, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_3DD0B1B3: 0
+    - Vector1_3DD0B1B3: 189
     - Vector1_FA867326: 0
+    - _UVMultiplierPortrait: 1.624
     m_Colors: []
