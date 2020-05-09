@@ -49,6 +49,7 @@ namespace Yorunikakeru
         
         public void FirstTeleport(Action firstRipple, Action secondRipple)
         {
+            _centerHuman.material = _firstTeleportMats[0];
             MoveSingle(_firstTeleportMats[0], 0, -DISTORTION_POWER_X, 0.1f, Ease.OutSine).OnComplete(() => 
             { 
                 _centerHuman.gameObject.SetActive(false);
