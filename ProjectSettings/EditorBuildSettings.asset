@@ -98,10 +98,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ARDance/Glitch/RGBShift.unity
     guid: 2a3f8946630f045688873d357660a6be
-  - enabled: 1
+  - enabled: 0
     path: Assets/ARDance/_Common/Sample/SampleShot/SampleShot.unity
     guid: 1d331f068dec3423ca4c195b878f2481
   - enabled: 0
     path: Assets/ARDance/Vfx/Keijro/Rsvfx/Rsvfx.unity
     guid: 00d45b7898e14429a9c523b36956b3a5
+  - enabled: 1
+    path: Assets/_Works/Yorunikakeru/Yorunikakeru.unity
+    guid: 07a72d5f141714089a25ed8447c7e504
   m_configObjects: {}

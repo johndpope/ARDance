@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -6,19 +6,23 @@ namespace Yorunikakeru
 {
     public class EventManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _centerHuman;
-        [SerializeField] private GameObject _rightHuman;
-        [SerializeField] private GameObject _leftHuman;
-        [SerializeField] private GameObject _originHuman;
-
+        [SerializeField] private Renderer _centerHuman;
+        [SerializeField] private Renderer _rightHuman;
+        [SerializeField] private Renderer _leftHuman;
+        [SerializeField] private Renderer _originHuman;
         [SerializeField] private GameObject _scatterVfx;
-        
-        [SerializeField] private Material[] _firstTeleportMats = new Material[2];
-        [SerializeField] private Material[] _secondTeleportMats = new Material[2];
-        [SerializeField] private Material[] _thirdTeleportMats = new Material[2];
+        [SerializeField] private VfxTestIntegrater _vfxIntegrater;
 
-        private readonly int PropertyID_DistortionPower = Shader.PropertyToID("_DistortionPower");
+        private Teleport _teleport;
         private int _teleportIndex;
+        private Ripple _ripple;
+
+        private void Awake()
+        {
+            _teleport = GetComponent<Teleport>();
+            _teleport.Init(_centerHuman, _rightHuman, _leftHuman, _originHuman);
+            _ripple = GetComponent<Ripple>();
+        }
 
         private void Start()
         {
@@ -51,19 +55,21 @@ namespace Yorunikakeru
             {
                 ScatterEffect();
             }
+            
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                _ripple.PutPulse(new Vector2(
+                    -_centerHuman.transform.position.x / 200f + 0.5f,
+                    -_centerHuman.transform.position.z / 200f + 0.5f
+                    ));
+//                _ripple.PutPulse(new Vector2(0.7f, 0.7f));
+            }
         }
 
         private void Reset()
         {
             _teleportIndex = 0;
-            _centerHuman.SetActive(true); 
-            _rightHuman.SetActive(false);
-            _leftHuman.SetActive(false);
-            _originHuman.SetActive(false);
-            _firstTeleportMats[0].SetFloat(PropertyID_DistortionPower, 0f);
-            _firstTeleportMats[1].SetFloat(PropertyID_DistortionPower, 0.45f);
-            _secondTeleportMats[1].SetFloat(PropertyID_DistortionPower, -0.4f);
-            _thirdTeleportMats[1].SetFloat(PropertyID_DistortionPower, 0.3f);
+            _teleport.Reset();
             _scatterVfx.SetActive(false);
         }
 
@@ -83,49 +89,60 @@ namespace Yorunikakeru
             }
             _teleportIndex++;
         }
-        
+
         private void FirstTeleport()
         {
-            Move2Single(_firstTeleportMats[0], 0, -0.4f, 0.1f, Ease.InSine).OnComplete(() => 
-            { 
-                _centerHuman.SetActive(false); 
-                _rightHuman.SetActive(true);
-                Move2Single(_firstTeleportMats[1], 0.45f, 0f, 0.1f, Ease.OutSine);
-            });
+            _teleport.FirstTeleport(
+                () => 
+                    _ripple.PutPulse(new Vector2(
+                        -_centerHuman.transform.position.x / 200f + 0.5f,
+                        -_centerHuman.transform.position.z / 200f + 0.5f)),
+                () => 
+                    _ripple.PutPulse(new Vector2(
+                        -_rightHuman.transform.position.x / 200f + 0.5f, 
+                        -_rightHuman.transform.position.z / 200f + 0.5f))
+            );
         }
-        
+
         private void SecondTeleport()
         {
-            Move2Single(_secondTeleportMats[0], 0, 0.45f, 0.1f, Ease.InSine).OnComplete(() => 
-            { 
-                _rightHuman.SetActive(false); 
-                _leftHuman.SetActive(true);
-                Move2Single(_secondTeleportMats[1], -0.4f, 0f, 0.1f, Ease.OutSine);
-            });
+            _teleport.SecondTeleport(
+                () => 
+                    _ripple.PutPulse(new Vector2(
+                        -_rightHuman.transform.position.x / 200f + 0.5f,
+                        -_rightHuman.transform.position.z / 200f + 0.5f)),
+                () => 
+                    _ripple.PutPulse(new Vector2(
+                        -_leftHuman.transform.position.x / 200f + 0.5f, 
+                        -_leftHuman.transform.position.z / 200f + 0.5f)));
         }
         
         private void ThirdTeleport()
         {
-            Move2Single(_thirdTeleportMats[0], 0, -0.4f, 0.1f, Ease.InSine).OnComplete(() => 
-            { 
-                _leftHuman.SetActive(false); 
-                _originHuman.SetActive(true);
-                Move2Single(_thirdTeleportMats[1], 0.3f, 0f, 0.1f, Ease.OutSine);
-            });
-        }
-        
-        private Tween Move2Single(Material material, float start, float end, float duration, Ease ease)
-        {
-            var value = start;
-            return DOTween.To(() => value, num => value = num, end, duration)
-                .SetEase(ease)
-                .OnUpdate(() => material.SetFloat(PropertyID_DistortionPower, value));
+            _teleport.ThirdTeleport(
+                () => 
+                    _ripple.PutPulse(new Vector2(
+                        -_leftHuman.transform.position.x / 200f + 0.5f,
+                        -_leftHuman.transform.position.z / 200f + 0.5f)),
+                () => 
+                    _ripple.PutPulse(new Vector2(
+                        -_originHuman.transform.position.x / 200f + 0.5f, 
+                        -_originHuman.transform.position.z / 200f + 0.5f)));
         }
 
         public void ScatterEffect()
         {
+            StartCoroutine(Scatter());
+        }
+
+        private IEnumerator Scatter()
+        {
+            _vfxIntegrater.IsEnable = true;
+            yield return new WaitForSeconds(0.1f);
             _scatterVfx.SetActive(true);
-            DOVirtual.DelayedCall(0.05f, () => _originHuman.SetActive(false));
+            yield return new WaitForSeconds(0.05f);
+            _originHuman.gameObject.SetActive(false);
+            _vfxIntegrater.IsEnable = false;
         }
     }
 }

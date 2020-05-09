@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Test
-  m_Shader: {fileID: -6465566751694194690, guid: b70f06b3f6a0b41859a992a55f4a829c,
+  m_Name: Shader Graphs_WaterFloor
+  m_Shader: {fileID: -6465566751694194690, guid: 7620a1e38919c4d11863bcd374f1dfd8,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,9 +20,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _SampleTexture2D_499525A8_Texture_1:
-        m_Texture: {fileID: 2800000, guid: a18582794238c5c4bada07c3883641b4, type: 3}
+    - _HeightMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    m_Floats:
+    - Vector1_721987C3: 2000
+    - Vector1_9911BB8C: 3
+    - Vector1_FB87AEEF: 2000
     m_Colors: []

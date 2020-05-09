@@ -4,6 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class VfxIntegraterInVirtual : HumanSegmentationEffectBase
 {
+    public bool IsEnable
+    {
+        set
+        {
+            _isEnable = value;
+            _isSegementationActive = value;
+        }
+    }
+    private bool _isEnable;
+    
     [SerializeField] private Camera _deviceCamera;
     [SerializeField] private ComputeShader _computeShader;
     [SerializeField] private RenderTexture _positionMapPortrait;
@@ -46,6 +56,8 @@ public class VfxIntegraterInVirtual : HumanSegmentationEffectBase
     
     void Update()
     {
+        if (!_isEnable) return;
+        
         var humanDepthTexture = _arOcclusionManager.humanDepthTexture;
         if (humanDepthTexture)
         {
