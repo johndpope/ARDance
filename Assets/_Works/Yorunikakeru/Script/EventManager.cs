@@ -118,7 +118,7 @@ namespace Yorunikakeru
             _teleportIndex = 0;
             _teleport.Reset();
             _scatterVfx.SetActive(false);
-            _introController.Reset();
+            //_introController.Reset();
         }
 
         

@@ -20,9 +20,9 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _Attenuation: 0.988
+    - _Attenuation: 0.975
     - _DeltaUV: 3
-    - _PulsePower: 0.44
+    - _PulsePower: 0.02
     - _PulseRange: 0.0044
-    - _Speed: 0.5
+    - _Speed: 0.064
     m_Colors: []
