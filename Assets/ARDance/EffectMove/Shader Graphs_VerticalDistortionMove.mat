@@ -32,6 +32,6 @@ Material:
     - Vector1_75E55792: 1
     - Vector1_A4858573: 366
     - Vector1_B67901B5: 3
-    - _DistortionPower: -1
+    - _DistortionPower: 0
     m_Colors:
     - Color_1FC1D2D0: {r: 0, g: 0.6666667, b: 2, a: 1}

@@ -32,8 +32,8 @@ Material:
     - Vector1_75E55792: 1
     - Vector1_7AFCBFF7: 5
     - Vector1_A4858573: 200
-    - _Alpha: 1
-    - _DistortionPower: 0
+    - _Alpha: 0
+    - _DistortionPower: -0.45
     m_Colors:
     - Color_1FC1D2D0: {r: 0, g: 0.6666667, b: 2, a: 1}
     - _DIstortionPower: {r: 0, g: 0, b: 0, a: 0}

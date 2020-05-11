@@ -14,14 +14,17 @@ namespace Yorunikakeru
         [SerializeField] private GameObject _scatterVfx;
         [SerializeField] private VfxTestIntegrater _vfxIntegrater;
 
+        private AudioSource _audioSource;
         private Teleport _teleport;
         private int _teleportIndex;
         private Ripple _ripple;
         private IntroController _introController;
+        private RainController _rainController;
         private BigTransition _bigTransition;
 
         private void Awake()
         {
+            _audioSource = GetComponent<AudioSource>();
             _teleport = GetComponent<Teleport>();
             _teleport.Init(_centerHuman, _rightHuman, _leftHuman, _originHuman);
             _ripple = GetComponent<Ripple>();
@@ -29,6 +32,7 @@ namespace Yorunikakeru
             _introController.Init(_floor, _centerHuman);
             _bigTransition = GetComponent<BigTransition>();
             _bigTransition.Init(_floor, _centerHuman);
+            _rainController = GetComponent<RainController>();
         }
 
         private void Start()
@@ -75,6 +79,11 @@ namespace Yorunikakeru
         }
         
         #region Signal Event
+        public void PlayAudio()
+        {
+            _audioSource.Play();
+        }
+        
         public void LightUp()
         {
             _introController.LightUp();
@@ -85,8 +94,14 @@ namespace Yorunikakeru
             _introController.LightDiffuse();
         }
 
+        public void StartRain()
+        {
+            _rainController.StartRain();
+        }
+
         public void Transit()
         {
+            _rainController.StopRain();
             _bigTransition.Transit();
         }
         
@@ -118,7 +133,8 @@ namespace Yorunikakeru
             _teleportIndex = 0;
             _teleport.Reset();
             _scatterVfx.SetActive(false);
-            //_introController.Reset();
+            _introController.Reset();
+            _rainController.Reset();
         }
 
         
