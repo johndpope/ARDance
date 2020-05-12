@@ -7,8 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: InteractiveRipple
-  m_Shader: {fileID: 4800000, guid: b6d23f010d48244cd8f763cba971bfa7, type: 3}
+  m_Name: Shader Graphs_LightPillar
+  m_Shader: {fileID: -6465566751694194690, guid: 8badc656e690942d287a5db2cc63d294,
+    type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -20,9 +21,6 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _Attenuation: 0.975
-    - _DeltaUV: 3
-    - _PulsePower: 1
-    - _PulseRange: 0.0044
-    - _Speed: 0.064
-    m_Colors: []
+    - Vector1_D81BC8C7: 50
+    m_Colors:
+    - Color_F3D42F46: {r: 9.259268, g: 8.994268, b: 3.3630357, a: 1}

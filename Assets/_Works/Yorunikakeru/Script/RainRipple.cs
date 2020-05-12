@@ -16,9 +16,7 @@ public class RainRipple : MonoBehaviour
         particle.GetCollisionEvents(other, collisionEventList);
         foreach(var collisionEvent in collisionEventList) {
             Vector3 pos = collisionEvent.intersection;
-            _ripple.PutPulse(new Vector2(
-                -pos.x / 200f + 0.5f,
-                -pos.z / 200f + 0.5f));
+            _ripple.Pulse(pos, Yorunikakeru.Ripple.PulseStrength.Weak);
         }
     }
 }

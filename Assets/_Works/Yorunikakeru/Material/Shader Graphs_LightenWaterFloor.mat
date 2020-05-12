@@ -24,6 +24,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_1067A63: 1
     - Vector1_14AB02DF: 2000
@@ -37,4 +41,4 @@ Material:
     - _Radius: 1.53
     m_Colors:
     - Color_6CA977E6: {r: 0.023629412, g: 0.06634908, b: 0.084905684, a: 0}
-    - Vector2_5C427ED8: {r: -0.89, g: 10.3, b: 0, a: 0}
+    - Vector2_5C427ED8: {r: 0.11, g: 10.3, b: 0, a: 0}

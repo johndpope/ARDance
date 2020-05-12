@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using DG.Tweening;
 using UnityEngine;
 
 namespace Yorunikakeru
@@ -21,6 +20,7 @@ namespace Yorunikakeru
         private IntroController _introController;
         private RainController _rainController;
         private BigTransition _bigTransition;
+        private LightningPillar _lightningPillar;
 
         private void Awake()
         {
@@ -33,6 +33,7 @@ namespace Yorunikakeru
             _bigTransition = GetComponent<BigTransition>();
             _bigTransition.Init(_floor, _centerHuman);
             _rainController = GetComponent<RainController>();
+            _lightningPillar = GetComponent<LightningPillar>();
         }
 
         private void Start()
@@ -126,6 +127,11 @@ namespace Yorunikakeru
         {
             StartCoroutine(Scatter());
         }
+        
+        public void LightningShowEffect()
+        {
+            _lightningPillar.Show();
+        }
         #endregion
 
         private void Reset()
@@ -135,48 +141,28 @@ namespace Yorunikakeru
             _scatterVfx.SetActive(false);
             _introController.Reset();
             _rainController.Reset();
+            _lightningPillar.Reset();
         }
-
-        
 
         private void FirstTeleport()
         {
             _teleport.FirstTeleport(
-                () => 
-                    _ripple.PutPulse(new Vector2(
-                        -_centerHuman.transform.position.x / 200f + 0.5f,
-                        -_centerHuman.transform.position.z / 200f + 0.5f)),
-                () => 
-                    _ripple.PutPulse(new Vector2(
-                        -_rightHuman.transform.position.x / 200f + 0.5f, 
-                        -_rightHuman.transform.position.z / 200f + 0.5f))
-            );
+                () => _ripple.Pulse(_centerHuman.transform.position, Ripple.PulseStrength.Middle),
+                () => _ripple.Pulse(_rightHuman.transform.position, Ripple.PulseStrength.Middle));
         }
 
         private void SecondTeleport()
         {
             _teleport.SecondTeleport(
-                () => 
-                    _ripple.PutPulse(new Vector2(
-                        -_rightHuman.transform.position.x / 200f + 0.5f,
-                        -_rightHuman.transform.position.z / 200f + 0.5f)),
-                () => 
-                    _ripple.PutPulse(new Vector2(
-                        -_leftHuman.transform.position.x / 200f + 0.5f, 
-                        -_leftHuman.transform.position.z / 200f + 0.5f)));
+                () => _ripple.Pulse(_rightHuman.transform.position, Ripple.PulseStrength.Middle),
+                () => _ripple.Pulse(_leftHuman.transform.position, Ripple.PulseStrength.Middle));
         }
         
         private void ThirdTeleport()
         {
             _teleport.ThirdTeleport(
-                () => 
-                    _ripple.PutPulse(new Vector2(
-                        -_leftHuman.transform.position.x / 200f + 0.5f,
-                        -_leftHuman.transform.position.z / 200f + 0.5f)),
-                () => 
-                    _ripple.PutPulse(new Vector2(
-                        -_originHuman.transform.position.x / 200f + 0.5f, 
-                        -_originHuman.transform.position.z / 200f + 0.5f)));
+                () => _ripple.Pulse(_leftHuman.transform.position, Ripple.PulseStrength.Middle),
+                () => _ripple.Pulse(_originHuman.transform.position, Ripple.PulseStrength.Middle));
         }
 
         private IEnumerator Scatter()
